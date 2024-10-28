@@ -1,0 +1,19 @@
+{{define "mainMenu"}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hangman</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/src/style.css">
+</head>
+<body>
+    <!-- Afficher l'image dynamiquement depuis le dossier cours -->
+    <img src="/Images/title.gif" alt="Image du jeu">
+    <form class="centred" action="/1Player" method="POST"> <button class="TitleButton" role="button" type="1Player">Jouer seul</button> </form>
+    <form class="centred" action="/2Player" method="POST"> <button class="TitleButton" role="button" type="2Player">Jouer a deux</button> </form>
+    <form class="centred" action="/Leaderboard" method="POST"> <button class="TitleButton" role="button" type="Leaderboard">Tableau des scores</button> </form>
+    <form class="centred" action="/Wordlist" method="POST"> <button class="TitleButton" role="button" type="Wordlist">Choisir la liste de mots</button> </form>
+
+</body>
+</html>
+{{end}}

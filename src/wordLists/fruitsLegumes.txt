@@ -1,0 +1,58 @@
+Banane
+Pomme
+Poire
+Cerise
+Fraise
+Framboise
+Myrtille
+Raisin
+Orange
+Citron
+Pamplemousse
+Ananas
+Kiwi
+Mangue
+Papaye
+Pasteque
+Melon
+Abricot
+Peche
+Prune
+Tomate
+Carotte
+Concombre
+Courgette
+Poivron
+Brocoli
+Chou fleur
+Chou
+Laitue
+Epinard
+Betterave
+Radis
+Navet
+Aubergine
+Oignon
+Ail
+Pomme de terre
+Patate douce
+Pois
+Haricot vert
+Mais
+Artichaut
+Asperge
+Fenouil
+Poireau
+Celeri
+Endive
+Avocat
+Cassis
+Groseille
+Noix de coco
+Grenade
+Litchi
+Cranberry
+Kaki
+Figues
+Datte
+Goyave

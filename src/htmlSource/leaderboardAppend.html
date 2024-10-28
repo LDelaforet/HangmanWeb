@@ -1,0 +1,20 @@
+{{define "leaderboardRegisterScreen"}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajout au Leaderboard</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/src/style.css">
+</head>
+<body>
+    <!-- Afficher l'image dynamiquement depuis le dossier cours -->
+    
+    <h1 class="centred">Entrez votre nom pour le leaderboard</h1>
+    <!-- Formulaire pour envoyer la valeur de la textbox -->
+    <form class="centred" action="/Game/LeaderboardRegister/submit" method="POST"> 
+        <input type="text" id="letterTextBox" class="letter" name="nameTB" size="20" autocapitalize="off" autocorrect="off" autocomplete="on" autofocus="on" required oninput="document.getElementById('chosenValue').innerText = this.value;"/> 
+        <button class="TitleButton" role="button" type="1Player">Valider</button> 
+    </form>
+</body>
+</html>
+{{end}}

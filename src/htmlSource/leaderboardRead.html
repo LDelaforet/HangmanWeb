@@ -1,0 +1,25 @@
+{{define "leaderBoard"}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tableau des scores</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/src/style.css">
+</head>
+<body>
+    <h1 class="centred">Tableau des scores</h1>
+    <table class="centred">
+        <tr class="centred">
+            <th class="centred">Nom</th>
+            <th class="centred">Score</th>
+        </tr>
+        {{range .LeaderboardEntries}}
+        <tr class="centred">
+            <td class="centred">{{.Name}}</td>
+            <td class="centred">{{.Score}}</td>
+        </tr>
+        {{end}}
+    </table>
+    <form class="centred" action="/" method="POST"> <button class="TitleButton" role="button" type="1Player">Retour</button> </form>
+</html>
+{{end}}

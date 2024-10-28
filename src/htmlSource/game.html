@@ -1,0 +1,26 @@
+{{define "gameMenu"}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GAME</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/src/style.css">
+</head>
+<body>
+    <!-- Afficher l'image dynamiquement depuis le dossier cours -->
+    <img src="/Images/{{.LifeImage}}" alt="Image du jeu">
+    
+    <h1 class="centred">{{.DiscoveredLetters}}</h1>
+    <h3 class="centred">Lettres deja tentées:</h3>
+    <h4 class="centred">{{.TriedLetters}}</h4>
+    <h3 class="centred">Entrez votre lettre:</h3>
+    
+    <!-- Formulaire pour envoyer la valeur de la textbox -->
+    <form class="centred" action="/Game/submit" method="POST"> 
+        <input type="text" id="letterTextBox" class="letter" name="letterTB" size="20" autocapitalize="off" autocorrect="off" autocomplete="on" autofocus="on" required oninput="document.getElementById('chosenValue').innerText = this.value;"/> 
+        <button class="TitleButton" role="button" type="1Player">Envoyer</button> 
+    </form>
+
+</body>
+</html>
+{{end}}
