@@ -1,0 +1,25 @@
+{{define "gameMenu"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/src/st.css">
+</head>
+<body>
+    <div class="container">
+        {{if .SoloPlay}}
+        {{else}}
+        <h1 class="centred">Joueur {{.CurrentPlayer}}, trouvez le mot.</h1>
+        {{end}}
+        <img src="/Images/{{.LifeImage}}" alt="Image du jeu">
+        <div class="letters">{{.TriedLetters}}</div>
+        <div class="word">{{.DiscoveredLetters}}</div>
+        <form class="centred" action="/Game/submit" method="POST"> 
+            <input type="text" id="letterTextBox" class="textbox" name="letterTB" placeholder="Lettre" size="20" autocapitalize="off" autofocus="on" required oninput="document.getElementById('chosenValue').innerText = this.value;"/> 
+            <button class="button">Envoyer</button>
+        </form>
+    </div>
+</body>
+</html>
+{{end}}

@@ -1,0 +1,25 @@
+{{define "wordListChoose"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/src/wordListChoose.css">
+</head>
+    <title>Choix de la liste de mots</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Choisissez une liste de mots</h1>
+        <form action="/WordList/submit" method="POST">
+            <select name="wordList" id="wordList">
+                {{range .WordLists}}
+                    <option value="{{.}}">{{.}}</option>
+                {{end}}
+            </select>
+            <button class="button" type="submit">Valider</button>
+        </form>
+    </div>
+</body>
+</html>
+{{end}}

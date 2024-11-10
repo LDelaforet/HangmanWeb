@@ -1,0 +1,19 @@
+{{define "Inputword"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/src/smallWindow.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="centred">Joueur {{.CurrentPlayer}}, entrez un mot.</h1>
+        <form class="centred" action="/Game/init" method="POST"> 
+            <input type="text" id="letterTextBox" class="textbox" name="inputWord" placeholder="Mot:" size="20" autocapitalize="off" autofocus="on" required oninput="document.getElementById('chosenValue').innerText = this.value;"/> 
+            <button class="button" role="button" type="1Player">Envoyer</button> 
+        </form>
+    </div>
+</body>
+</html>
+{{end}}

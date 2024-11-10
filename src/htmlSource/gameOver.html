@@ -1,0 +1,34 @@
+{{define "loseScreen"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAME - Perdu</title>
+    <link rel="stylesheet" type="text/css" href="/src/st.css">
+</head>
+<body>
+    <div class="container"> <!-- Conteneur principal -->
+        <h1 class="centred">Perdu !</h1>
+        <h2 class="centred">Voici vos stats:</h2>
+        <h3 class="centred">Nombre de lettres trouvées: {{.TotalFound}}</h3>
+        <h3 class="centred">Nombre de lettres total: {{.TotalLenght}}</h3>
+        <h3 class="centred">Nombre de vies restantes: {{.TotalLives}}</h3>
+        <h3 class="centred">Temps écoulé: {{.TotalTimer}}</h3>
+        <h3 class="centred">Le mot était: {{.MissedWord}}</h3>
+
+        {{if .DoDisplay}}
+            <h3 class="centred">Entrez votre nom pour le leaderboard:</h3>
+            <form class="centred" action="/Game/LeaderboardRegister/submit" method="POST">
+                <input type="text" id="letterTextBox" class="textbox" name="nameTB" size="20" autocapitalize="off" autocorrect="off" autocomplete="on" autofocus="on" required oninput="document.getElementById('chosenValue').innerText = this.value;"/>
+                <button class="button" type="submit">Valider</button>
+            </form>
+        {{else}}
+            <form class="centred" action="/" method="POST">
+                <button class="button" type="submit">Menu principal</button>
+            </form>
+        {{end}}
+    </div> <!-- Fin du conteneur principal -->
+</body>
+</html>
+{{end}}

@@ -1,0 +1,28 @@
+{{define "winScreen"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/src/st.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="centred">Vous avez trouvé !</h1>
+        <h2 class="centred">Le Mot était: {{.MotActuel}}</h2>
+        <h3 class="centred">{{.RemainingLives}} vies</h3>
+        {{if .SoloPlay}}
+            <h3 class="centred">{{.TriesCount}} essais</h3>
+            <h3 class="centred">{{.TotalTimer}} secondes</h3>
+            <h3 class="centred">{{.CurrentScore}} points</h3>
+        {{end}}
+        <form action="/Game/init"><button class="button">Suivant</button></form>
+        {{if .SoloPlay}}
+            <form action="/"><button class="button">Arrêter</button></form>
+        {{else}}
+            <form action="/Game/multiWin"><button class="button">Abandonner</button></form>
+        {{end}}
+    </div>
+</body>
+</html>
+{{end}}

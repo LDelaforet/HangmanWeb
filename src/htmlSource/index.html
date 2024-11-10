@@ -1,19 +1,20 @@
 {{define "mainMenu"}}
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/src/mainMenu.css">
     <title>Hangman</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/src/style.css">
 </head>
-<body>
-    <!-- Afficher l'image dynamiquement depuis le dossier cours -->
-    <img src="/Images/title.gif" alt="Image du jeu">
-    <form class="centred" action="/1Player" method="POST"> <button class="TitleButton" role="button" type="1Player">Jouer seul</button> </form>
-    <form class="centred" action="/2Player" method="POST"> <button class="TitleButton" role="button" type="2Player">Jouer a deux</button> </form>
-    <form class="centred" action="/Leaderboard" method="POST"> <button class="TitleButton" role="button" type="Leaderboard">Tableau des scores</button> </form>
-    <form class="centred" action="/Wordlist" method="POST"> <button class="TitleButton" role="button" type="Wordlist">Choisir la liste de mots</button> </form>
-
-</body>
+    <body>
+        <div class="container">
+            <img src="/Images/title.gif" alt="PENDU">
+            <form action="/1Player"><button class="button">Jouer seul</button></form>
+            <form action="/2Player"><button class="button">Jouer a deux</button></form>
+            <form action="/Leaderboard"><button class="button">Tableaux des scores</button></form>
+            <form action="/WordList"><button class="button">Choix de la liste des mots</button></form>
+        </div>
+    </body>
 </html>
 {{end}}

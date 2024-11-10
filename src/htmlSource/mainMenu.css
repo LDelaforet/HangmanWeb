@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #1e1e2e;
+    font-family: Arial, sans-serif;
+    color: #ddd;
+}
+
+.container {
+    width: 141vw;
+    max-width: 635px;
+    height: 81vh;
+    background-color: #333;
+    padding: 5%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+    
+img {
+    width: 134%;
+    /*! background-color: #555; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 1.5em;
+    color: #ddd;
+}
+
+.letters {
+    width: 100%;
+    /* background-color: #444;*/
+    padding: 3%;
+    border-radius: 13px;
+    text-align: center;
+    font-family: monospace;
+    font-size: 1.2em;
+    margin-bottom: 2%;
+}
+
+.word {
+    width: 100%;
+    background-color: #444;
+    padding: 2%;
+    border-radius: 13px;
+    text-align: center;
+    font-size: 2.2em;
+    margin-bottom: 2%;
+    font-family: monospace;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /*! gap: 6px; */
+    margin-bottom: 0%;
+}
+
+.textbox {
+    width: 24%;
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    border: none;
+    background-color: #555;
+    color: #ddd;
+    text-align: center;
+    margin-left: 38%;
+    margin-bottom: 10%;
+}
+
+.button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    border: none;
+    background-color: #777;
+    color: #ddd;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #999;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #444;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    font-size: 1em;
+    border-bottom: 1px solid #555;
+}
+
+th {
+    background-color: #555;
+    font-weight: bold;
+    color: #ddd;
+}
+
+tr:hover {
+    background-color: #555;
+    cursor: default;
+}
