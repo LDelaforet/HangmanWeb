@@ -44,3 +44,7 @@ Le jeu sera ainsi accessible a la page 127.0.0.1:8080 ainsi qu'a toutes les ip d
 - `POST /Game/init` : Initialise une nouvelle partie.
 - `POST /Game/LeaderboardRegister/submit` : Soumet un nouveau score au tableau des scores.
 - `POST /WordList/submit` : Soumet un fichier de mots pour réinitialiser la liste des mots.
+
+## Equipe
+- [@alpha3lili](https://github.com/alpha3lili): Partie Front-End
+- [@LDelaforet](https://github.com/@LDelaforet): Partie Back-End
