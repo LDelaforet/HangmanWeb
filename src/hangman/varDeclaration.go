@@ -57,7 +57,14 @@ type LeaderboardEntry struct {
 func VarInit() {
 	wordListInit()
 	*RemainingLivesPtr = 9
-	*LeaderBoardFileNamePtr = "leaderboard_" + strings.Split(FileName, ".txt")[0] + ".txt"
+	*LeaderBoardFileNamePtr = "leaderboards\\" + strings.Split(FileName, "wordLists\\")[1]
+}
+
+func reInitWordList(filename string) {
+	filename = strings.ReplaceAll(filename, " ", "")
+	*FileNamePtr = filename
+	wordListInit()
+	*LeaderBoardFileNamePtr = "leaderboards\\" + strings.Split(FileName, "wordLists\\")[1]
 }
 
 // Lis le fichier containant les mots et les ajoute à la liste
@@ -70,6 +77,5 @@ func wordListInit() {
 }
 
 func WebServerInit() {
-	*FileNamePtr = "wordlist.txt"
 	VarInit()
 }

@@ -8,10 +8,10 @@ import (
 )
 
 func main() {
-	fichier := "words.txt"
+	fichier := "wordLists\\words.txt"
 	args := os.Args[1:]
 	if len(args) == 1 {
-		fichier = args[0]
+		fichier = "wordLists\\" + args[0]
 	}
 
 	helpMessage := `

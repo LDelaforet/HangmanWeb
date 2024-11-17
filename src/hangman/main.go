@@ -3,7 +3,9 @@ package hangman
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
+	"strings"
 	"text/template"
 	"time"
 )
@@ -21,6 +23,20 @@ type PassedVars struct {
 	CurrentPlayer      string
 	TriesCount         string
 	LeaderboardEntries []LeaderboardEntry
+	SoloPlay           bool
+}
+
+type WordListChoose struct {
+	WordLists []string
+}
+
+type Stats struct {
+	DoDisplay   bool
+	TotalFound  int
+	TotalLenght int
+	TotalLives  int
+	TotalTimer  int
+	MissedWord  string
 }
 
 var timer time.Time
@@ -94,26 +110,39 @@ func MainLoop() {
 	})
 
 	http.HandleFunc("/Game/init", func(w http.ResponseWriter, r *http.Request) {
-		if !soloPlay {
-			temp.ExecuteTemplate(w, "Inputword", passedVariables)
+		if r.Method == http.MethodPost {
+			if r.FormValue("inputWord") != "" {
+				*CurrentWordPtr = []rune(r.FormValue("inputWord"))
+				*FoundLettersPtr = make([]rune, len(*CurrentWordPtr))
+				currentPlayer = playerSwitch(currentPlayer)
+			} else {
+				*CurrentWordPtr = nil
+			}
 		}
-		ChooseWord()
+		if !soloPlay && *CurrentWordPtr == nil {
+			passedVariables.CurrentPlayer = strconv.Itoa(currentPlayer)
+			passedVariables.SoloPlay = false
+			temp.ExecuteTemplate(w, "Inputword", passedVariables)
+			return
+		} else if *CurrentWordPtr == nil {
+			passedVariables.SoloPlay = true
+			ChooseWord()
+		}
 		*RemainingLivesPtr = 9
 		*TriedLettersPtr = make([]rune, 0)
 		*TriesPtr = 1
 
 		RevealLetter(2) // Révèle le nombre donné en argument de lettres, si l'argument est 99: révèle la première et la dernière lettre
-		if soloPlay {
-			timer = StartTimer()
-		} else {
-			ClearScreen()
-			fmt.Println(ToCenter("Le joueur " + strconv.Itoa(currentPlayer) + " doit trouver le mot"))
-			fmt.Print(ToCenter("Appuyez sur entrée pour continuer"))
+		timer = StartTimer()
+
+		var triedLettersStr []string
+		for _, r := range TriedLetters {
+			triedLettersStr = append(triedLettersStr, string(r))
 		}
 
-		passedVariables.TriedLetters = string(TriedLetters)
+		passedVariables.TriedLetters = strings.Join(triedLettersStr, ", ") // je sais pas pourquoi y'a tried et tentées, le code est trop vieux
 		passedVariables.LifeImage = "lifeCounter_" + strconv.Itoa(RemainingLives) + ".png"
-		passedVariables.LettresTentees = string(TriedLetters)
+		passedVariables.LettresTentees = strings.Join(triedLettersStr, ", ")
 		passedVariables.Letter = " "
 		passedVariables.MotActuel = string(CurrentWord)
 		passedVariables.RemainingLives = strconv.Itoa(RemainingLives)
@@ -127,25 +156,6 @@ func MainLoop() {
 
 	http.HandleFunc("/Game", func(w http.ResponseWriter, r *http.Request) {
 		passedVariables.LifeImage = "lifeCounter_" + strconv.Itoa(9-RemainingLives) + ".png"
-		fmt.Print("Lettres trouvées: ")
-		for _, letter := range *FoundLettersPtr {
-			if letter == 0 {
-				fmt.Print("_ ")
-			} else {
-				fmt.Print(string(letter) + " ")
-			}
-		}
-
-		fmt.Print("\nMot entier: ")
-		for _, letter := range *CurrentWordPtr {
-			if letter == 0 {
-				fmt.Print("_ ")
-			} else {
-				fmt.Print(string(letter) + " ")
-			}
-		}
-		fmt.Println("\n")
-
 		passedVariables.DiscoveredLetters = ""
 
 		for _, letter := range *FoundLettersPtr {
@@ -160,9 +170,7 @@ func MainLoop() {
 
 	http.HandleFunc("/Game/submit", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
-			fmt.Println(r.FormValue("letterTB"))
 			input := []rune(r.FormValue("letterTB"))
-			fmt.Println("Input: ", input)
 			if len(input) == 0 {
 				http.Redirect(w, r, "/Game", http.StatusSeeOther)
 			} else if len(input) == 1 {
@@ -180,10 +188,8 @@ func MainLoop() {
 			}
 			*TriesPtr++
 			if checkWord(FoundLetters) {
-				fmt.Println(ToCenter("Vous avez gagné !"))
 				http.Redirect(w, r, "/Game/Win", http.StatusSeeOther)
 			} else if RemainingLives <= 0 {
-				fmt.Println(ToCenter("Vous avez perdu !"))
 				http.Redirect(w, r, "/Game/GameOver", http.StatusSeeOther)
 			} else {
 				http.Redirect(w, r, "/Game", http.StatusSeeOther)
@@ -192,7 +198,16 @@ func MainLoop() {
 	})
 
 	http.HandleFunc("/Game/GameOver", func(w http.ResponseWriter, r *http.Request) {
-		temp.ExecuteTemplate(w, "gameOverScreen", passedVariables)
+		doDisplay := true
+		if totalFound == 0 || totalLenght == 0 || totalLives == 0 || totalTimer == 0 {
+			doDisplay = false
+		}
+		if !soloPlay {
+			http.Redirect(w, r, "/Game/multiWin", http.StatusSeeOther)
+		}
+		stats := Stats{doDisplay, totalFound, totalLenght, totalLives, totalTimer, string(CurrentWord)}
+		*CurrentWordPtr = nil
+		temp.ExecuteTemplate(w, "loseScreen", stats)
 	})
 
 	http.HandleFunc("/Game/Win", func(w http.ResponseWriter, r *http.Request) {
@@ -202,23 +217,16 @@ func MainLoop() {
 		totalTimer += StopTimer(timer)
 
 		Score = ScoreCalc(totalFound, totalLenght, totalLives, totalTimer)
-		fmt.Println(ToCenter("Vous avez trouvé le mot !"))
-		fmt.Println(ToCenter("Le mot était: " + string(CurrentWord)))
-		fmt.Println(ToCenter("Il vous restait " + strconv.Itoa(RemainingLives) + " vies."))
-		fmt.Println(ToCenter("Vous avez trouvé le mot en " + strconv.Itoa(*TriesPtr) + " essais."))
-		fmt.Println(ToCenter("Temps écoulé: " + strconv.Itoa(int(time.Since(timer).Seconds()))))
-		fmt.Println(ToCenter("Score actuel: " + strconv.Itoa(Score)))
 
 		passedVariables.MotActuel = string(CurrentWord)
 		passedVariables.RemainingLives = strconv.Itoa(RemainingLives)
 		passedVariables.TriesCount = strconv.Itoa(*TriesPtr)
 		passedVariables.TotalTimer = strconv.Itoa(int(time.Since(timer).Seconds()))
 		passedVariables.CurrentScore = strconv.Itoa(Score)
-		temp.ExecuteTemplate(w, "winScreen", passedVariables)
-	})
 
-	http.HandleFunc("/Game/LeaderboardRegister", func(w http.ResponseWriter, r *http.Request) {
-		temp.ExecuteTemplate(w, "leaderboardRegisterScreen", passedVariables)
+		*CurrentWordPtr = nil
+
+		temp.ExecuteTemplate(w, "winScreen", passedVariables)
 	})
 
 	http.HandleFunc("/Game/LeaderboardRegister/submit", func(w http.ResponseWriter, r *http.Request) {
@@ -234,9 +242,45 @@ func MainLoop() {
 
 	http.HandleFunc("/Leaderboard", func(w http.ResponseWriter, r *http.Request) {
 		passedVariables.LeaderboardEntries = readLeaderBoard()
-		fmt.Println(readLeaderBoard())
 		temp.ExecuteTemplate(w, "leaderBoard", passedVariables)
 	})
 
+	http.HandleFunc("/WordList", func(w http.ResponseWriter, r *http.Request) {
+		files := ListFiles("wordLists")
+		wordList := WordListChoose{WordLists: files}
+		temp.ExecuteTemplate(w, "wordListChoose", wordList)
+	})
+	http.HandleFunc("/WordList/submit", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			if r.FormValue("wordList") != "" {
+				filename := "wordLists\\" + r.FormValue("wordList")
+				reInitWordList(filename)
+			} else {
+				http.Redirect(w, r, "/WordList", http.StatusSeeOther)
+			}
+		}
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	})
+	http.HandleFunc("/Game/multiWin", func(w http.ResponseWriter, r *http.Request) {
+		currentPlayer = playerSwitch(currentPlayer)
+		passedVariables.CurrentPlayer = strconv.Itoa(currentPlayer)
+		temp.ExecuteTemplate(w, "multiWinScreen", passedVariables)
+	})
+
+	fmt.Println("Serveur lancé sur le port 8080")
 	http.ListenAndServe("0.0.0.0:8080", nil)
+}
+
+func ListFiles(directory string) []string {
+	dir, _ := os.Open(directory)
+	defer dir.Close()
+
+	fileInfos, _ := dir.Readdir(0)
+
+	var result []string
+	for _, fileInfo := range fileInfos {
+		result = append(result, fileInfo.Name())
+	}
+	return result
 }

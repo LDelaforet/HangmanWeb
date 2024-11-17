@@ -63,6 +63,9 @@ func readLeaderBoard() []LeaderboardEntry {
 }
 
 func AddToLeaderboard(name string, score int) {
+	if score > 1000000000 {
+		return
+	}
 	// Fais un backup de leaderboard.txt
 	CopyFile(LeaderboardFileName, LeaderboardFileName+".bak")
 
@@ -70,6 +73,9 @@ func AddToLeaderboard(name string, score int) {
 	scores = append(scores, LeaderboardEntry{Name: name, Score: score})
 	scoreFileContent := ""
 	for _, entry := range scores {
+		if entry.Score > 1000000000 {
+			continue
+		}
 		scoreFileContent += entry.Name + ": " + strconv.Itoa(entry.Score) + "\n"
 	}
 	// Enleve les deux derniers caractères pour éviter le \n de fin
@@ -91,6 +97,10 @@ func ScoreCalc(totalFound int, totalLength int, totalLives int, totalTimer int) 
 
 	if totalFound == 0 {
 		bonus = 50
+	}
+
+	if totalFound == 0 || totalLength == 0 || totalLives == 0 || totalTimer == 0 {
+		return 0
 	}
 
 	score := (float64(totalFound) * 20) + // Points par mot trouvé
