@@ -18,7 +18,7 @@
         <div class="word">{{.DiscoveredLetters}}</div>
         <form class="centred" action="/Game/submit" method="POST"> 
             <input type="text" id="letterTextBox" class="textbox" name="letterTB" placeholder="Lettre" size="20" autocapitalize="off" autofocus="on" required oninput="document.getElementById('chosenValue').innerText = this.value;"/> 
-            <button class="button">Envoyer</button>
+            <button class="button" autog>Envoyer</button>
         </form>
     </div>
 </body>

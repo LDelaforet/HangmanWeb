@@ -17,7 +17,7 @@
             <h3 class="centred">{{.TotalTimer}} secondes</h3>
             <h3 class="centred">{{.CurrentScore}} points</h3>
         {{end}}
-        <form action="/Game/init"><button class="button">Suivant</button></form>
+        <form action="/Game/init"><button class="button" autofocus="on">Suivant</button></form>
         {{if .SoloPlay}}
             <form action="/"><button class="button">Arrêter</button></form>
         {{else}}
